@@ -192,7 +192,7 @@
             height: 100%;
             object-fit: cover; 
             transition: transform 0.3s ease;
-            cursor: pointer; /* Indicates it can be clicked */
+            cursor: pointer; 
         }
         
         .photo-item:hover img {
@@ -272,49 +272,63 @@
             padding: 8px 10px; 
             border-radius: 4px;
             transition: all 0.2s ease;
-            display: block;
-            text-align: center;
+            white-space: nowrap;
+            display: inline-block;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
         }
         .email-link:hover {
             border-color: var(--accent-color);
             color: var(--accent-color);
         }
 
-        /* --- NEW: Image Modal Lightbox Styles --- */
+        /* --- THE 60FPS MODAL ENGINE --- */
         .modal {
-            display: none; 
+            display: flex; /* Always flex, no reflow jumps */
+            visibility: hidden; /* Hidden from render tree */
+            pointer-events: none; /* Cannot be clicked */
+            opacity: 0;
+            
             position: fixed; 
             z-index: 1000; 
             left: 0;
             top: 0;
             width: 100%; 
             height: 100%; 
-            background-color: rgba(10, 10, 18, 0.95); 
-            backdrop-filter: blur(5px);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            background-color: rgba(5, 5, 10, 0.98); /* Removed heavy blur */
+            
+            justify-content: center;
+            align-items: center;
+            
+            /* Hardware accelerated transition on opacity and visibility */
+            transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+            will-change: opacity;
         }
         
         .modal.show {
-            display: flex;
+            visibility: visible;
+            pointer-events: auto;
             opacity: 1;
-            justify-content: center;
-            align-items: center;
         }
 
         .modal-content {
             max-width: 90%;
             max-height: 90%;
             border-radius: 8px;
-            box-shadow: 0 0 30px rgba(0, 255, 157, 0.15);
+            box-shadow: 0 0 40px rgba(0, 255, 157, 0.1);
             border: 1px solid var(--accent-color);
+            
+            /* Start slightly scaled down */
             transform: scale(0.95);
-            transition: transform 0.3s ease;
+            /* Fast, snappy transform transition */
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            will-change: transform;
             object-fit: contain;
         }
 
         .modal.show .modal-content {
-            transform: scale(1);
+            transform: scale(1); /* Pop to full size */
         }
 
         .modal-close {
@@ -326,12 +340,12 @@
             font-weight: bold;
             transition: color 0.2s ease;
             cursor: pointer;
+            z-index: 1001;
         }
 
         .modal-close:hover,
         .modal-close:focus {
             color: var(--accent-color);
-            text-decoration: none;
         }
 
         @media (max-width: 1024px) {
@@ -352,19 +366,15 @@
                 <img class="profile-img" src="Headshot.jpg" alt="Mauricio Mendoza-Silos">
                 <h1 style="margin: 5px 0; font-size: 1.8rem;">Mauricio<br>Mendoza-Silos</h1>
                 <p class="mono accent" style="margin: 5px 0 10px 0; font-size: 1rem;">> Junior Software Engineer</p>
-                
                 <div class="bio-text">
                     <p style="margin-bottom: 5px;"><strong>> status:</strong> Dec 2025 Graduate</p>
                     <p style="margin-bottom: 5px;"><strong>> background:</strong> First-Gen, Oldest of 7</p>
                     <p><strong>> mission:</strong> Building robust backend systems to move people beyond what's possible.</p>
                 </div>
              </div>
-
              <div class="contact-section-internal">
                 <h2 class="mono">> dev_contact [Contact]</h2>
-                <a href="mailto:m.auriciomendozasilos@gmail.com" class="email-link">
-                    m.auriciomendozasilos@gmail.com
-                </a>
+                <a href="mailto:m.auriciomendozasilos@gmail.com" class="email-link">m.auriciomendozasilos@gmail.com</a>
             </div>
         </div>
 
@@ -379,9 +389,7 @@
                             <p>Active member of Association of Latino Professionals For America. Focused on effective communication and team collaboration.</p>
                         </div>
                     </div>
-                    
                     <div class="timeline-connector">🡅</div>
-
                     <div class="timeline-event">
                         <div class="event-date mono">2023</div>
                         <div class="event-details">
@@ -389,9 +397,7 @@
                             <p>Translated business needs into technical requirements. Participated in design reviews and team planning sessions.</p>
                         </div>
                     </div>
-
                     <div class="timeline-connector">🡅</div>
-
                     <div class="timeline-event">
                         <div class="event-date mono">2021</div>
                         <div class="event-details">
@@ -399,9 +405,7 @@
                             <p>B.S. Computer Science. Graduated December 2025.</p>
                         </div>
                     </div>
-
                     <div class="timeline-connector">🡅</div>
-
                     <div class="timeline-event">
                         <div class="event-date mono">2019</div>
                         <div class="event-details">
@@ -409,9 +413,7 @@
                             <p>Initial exposure to corporate technology ecosystems, cross-functional collaboration, and agile workflows.</p>
                         </div>
                     </div>
-
                     <div class="timeline-connector">🡅</div>
-
                      <div class="timeline-event">
                         <div class="event-date mono">2017</div>
                         <div class="event-details">
@@ -449,7 +451,6 @@
 
             <div class="panel projects-panel">
                 <h2 class="mono">> git_repos (Projects)</h2>
-                
                 <div class="projects-container">
                     <div class="project-item">
                         <div class="project-header">
@@ -459,7 +460,6 @@
                         <span class="project-tech">[Node.js] [REST APIs] [Git]</span>
                         <p>Built robust backend services for real-time systems. Managed collaborative Git workflows (branching/PRs).</p>
                     </div>
-
                     <div class="project-item">
                         <div class="project-header">
                             <h3>MavBeats Analytics</h3>
@@ -468,7 +468,6 @@
                         <span class="project-tech">[Python] [PostgreSQL] [Testing]</span>
                         <p>Architected secure backend services and relational databases. Applied observability principles and testing protocols.</p>
                     </div>
-
                     <div class="project-item">
                         <div class="project-header">
                             <h3>USACE AR Simulator</h3>
@@ -500,45 +499,25 @@
     <script>
         const modal = document.getElementById("imageModal");
         const modalImg = document.getElementById("expandedImg");
-        const closeBtn = document.getElementsByClassName("modal-close")[0];
         const images = document.querySelectorAll(".photo-item img");
 
-        // Open Modal when an image is clicked
         images.forEach(img => {
             img.addEventListener("click", function() {
-                modal.style.display = "flex";
-                // Slight timeout ensures the CSS transition triggers
-                setTimeout(() => {
-                    modal.classList.add("show");
-                }, 10);
+                // Instantly swap source (browser already has it cached from the grid)
                 modalImg.src = this.src;
+                // Instantly trigger CSS transition (no timeouts needed!)
+                modal.classList.add("show");
             });
         });
 
-        // Function to close the modal
         function closeModal() {
             modal.classList.remove("show");
-            // Wait for transition to finish before hiding element
-            setTimeout(() => {
-                modal.style.display = "none";
-            }, 300); 
         }
 
-        // Close on 'X' click
-        closeBtn.addEventListener("click", closeModal);
+        modal.addEventListener("click", closeModal);
 
-        // Close when clicking anywhere outside the image
-        modal.addEventListener("click", function(event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-
-        // Close when pressing the 'Escape' key
         document.addEventListener("keydown", function(event) {
-            if (event.key === "Escape" && modal.classList.contains("show")) {
-                closeModal();
-            }
+            if (event.key === "Escape") closeModal();
         });
     </script>
 
