@@ -22,7 +22,7 @@
             margin: 0;
             padding: 0;
             height: 100vh; 
-            overflow: hidden; 
+            overflow: hidden; /* Strict no-scroll policy */
         }
 
         .mono { font-family: 'Courier New', monospace; letter-spacing: 1px; }
@@ -44,7 +44,7 @@
         .panel {
             background: var(--card-bg);
             border-radius: 12px;
-            padding: 20px;
+            padding: 20px; /* Restored original full padding */
             border: 1px solid #2a2a35;
             display: flex;
             flex-direction: column;
@@ -54,7 +54,7 @@
 
         .panel h2 {
             margin-top: 0;
-            font-size: 0.9rem;
+            font-size: 0.9rem; /* Restored original size */
             border-bottom: 1px solid #333;
             padding-bottom: 8px;
             margin-bottom: 15px;
@@ -81,7 +81,7 @@
         }
 
         .profile-img {
-            width: 180px; 
+            width: 180px; /* Restored original size */
             height: 180px;
             object-fit: cover;
             border: 2px dashed var(--accent-color);
@@ -90,12 +90,12 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 10px;
-            flex-shrink: 1; 
+            flex-shrink: 0; /* Prevents image from squishing */
         }
         
         .bio-text { 
             text-align: left; 
-            font-size: 0.9rem; 
+            font-size: 0.9rem; /* Restored original size */
             color: var(--text-secondary);
         }
 
@@ -105,9 +105,10 @@
             padding-top: 15px;
             flex-shrink: 0;
         }
+        
         .contact-section-internal h2 {
              border-bottom: none;
-             padding-bottom: 5px;
+             padding-bottom: 0;
              margin-bottom: 5px;
         }
 
@@ -130,42 +131,49 @@
         .timeline-container {
             display: flex;
             flex-direction: column;
-            justify-content: space-between; 
+            gap: clamp(4px, 1vh, 8px); 
             height: 100%;
             overflow: hidden; 
         }
         
         .timeline-event {
             display: flex;
+            align-items: center; 
             gap: 10px;
             border-left: 2px solid var(--accent-color);
             padding-left: 10px;
             background: rgba(0, 255, 157, 0.03);
             border-radius: 0 8px 8px 0;
-            padding: 10px; 
+            padding: clamp(6px, 1.2vh, 10px); 
+            flex: 1; /* This remains so ONLY the timeline boxes stretch */
+            min-height: 0; 
+            overflow: hidden;
         }
         
         .event-date {
             min-width: 70px;
             font-weight: bold;
             color: var(--accent-color);
-            font-size: 0.85rem;
+            font-size: clamp(0.75rem, 1.5vh, 1rem); 
             display: flex;
             align-items: center;
         }
-        .event-details h3 { margin: 0 0 2px 0; font-size: 0.9rem; }
-        .event-details p { margin: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.2;}
+        
+        .event-details h3 { margin: 0 0 2px 0; font-size: clamp(0.85rem, 1.6vh, 1.1rem); }
+        .event-details p { margin: 0; font-size: clamp(0.7rem, 1.3vh, 0.9rem); color: var(--text-secondary); line-height: 1.2; }
         
         .timeline-connector {
             text-align: center;
             color: var(--accent-color);
             opacity: 0.4;
-            font-size: 1.2rem;
             line-height: 0;
             padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0; 
+            height: clamp(5px, 1vh, 10px); 
+            font-size: clamp(0.8rem, 1.5vh, 1.2rem);
         }
 
         /* Photo Panel */
@@ -195,27 +203,25 @@
             cursor: pointer; 
         }
         
-        .photo-item:hover img {
-            transform: scale(1.05); 
-        }
+        .photo-item:hover img { transform: scale(1.05); }
 
         /* Right Column Styles */
         .col-right { 
-            display: grid; 
-            grid-template-rows: auto minmax(0, 1fr) auto;
+            display: flex; 
+            flex-direction: column;
             gap: 15px; 
             height: 100%;
             overflow: hidden;
         }
 
-        .skill-panel { flex: 0 0 auto; }
+        .skill-panel { flex: 0 0 auto; } /* Prevents shrinking */
         .skill-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
         .skill-tag {
             background: #0a0a12;
             border: 1px solid var(--accent-color);
             padding: 3px 8px;
             border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 0.75rem; /* Restored original size */
             color: var(--text-primary);
         }
 
@@ -223,20 +229,27 @@
             display: flex; 
             flex-direction: column;
             overflow: hidden;
+            flex: 1; /* Projects take up the remaining space dynamically */
             min-height: 0; 
         }
         .projects-container {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            gap: clamp(6px, 1.2vh, 10px); 
             height: 100%;
-            overflow: hidden;
+            overflow: hidden; 
         }
         .project-item {
             background: rgba(0,0,0,0.2);
-            padding: 8px 10px;
             border-radius: 6px;
             border-left: 3px solid var(--text-secondary);
+            flex: 1; /* This remains so ONLY the project boxes stretch */
+            min-height: 0; 
+            padding: clamp(6px, 1.2vh, 10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            overflow: hidden;
         }
         .project-header {
             display: flex;
@@ -244,30 +257,31 @@
             align-items: center;
             margin-bottom: 2px;
         }
-        .project-item h3 { margin: 0; font-size: 0.85rem; color: #fff; }
-        .project-date { font-size: 0.65rem; color: #666; }
-        .project-tech { font-size: 0.65rem; color: var(--accent-color); font-family: 'Courier New', monospace; display: block; margin-bottom: 2px;}
-        .project-item p { margin: 0; font-size: 0.75rem; color: var(--text-secondary); line-height: 1.2; }
+        
+        .project-item h3 { margin: 0; font-size: clamp(0.8rem, 1.5vh, 1rem); color: #fff; }
+        .project-date { font-size: clamp(0.6rem, 1.1vh, 0.8rem); color: #666; }
+        .project-tech { font-size: clamp(0.6rem, 1.1vh, 0.8rem); color: var(--accent-color); font-family: 'Courier New', monospace; display: block; margin-bottom: 4px;}
+        .project-item p { margin: 0; font-size: clamp(0.7rem, 1.3vh, 0.9rem); color: var(--text-secondary); line-height: 1.2; }
 
         /* Hobbies (Right Column) */
         .hobby-panel-right {
-            padding: 20px;
-            flex-shrink: 0;
+            padding: 20px; /* Restored original padding */
+            flex-shrink: 0; /* Prevents shrinking */
         }
         .hobby-list {
             display: flex;
             justify-content: space-around;
             align-items: center;
         }
-        .hobby { text-align: center; font-size: 0.75rem; color: var(--text-secondary); }
-        .hobby-icon { font-size: 1.8rem; display: block; margin-bottom: 5px; }
+        .hobby { text-align: center; font-size: 0.75rem; color: var(--text-secondary); } /* Restored original size */
+        .hobby-icon { font-size: 1.8rem; display: block; margin-bottom: 5px; } /* Restored original size */
 
         /* Shared Contact Link Style */
         .email-link {
             color: var(--text-secondary);
             text-decoration: none;
             font-family: 'Courier New', monospace;
-            font-size: 1rem; 
+            font-size: 1rem; /* Restored 1rem size */
             border: 1px dashed #333;
             padding: 8px 10px; 
             border-radius: 4px;
@@ -285,9 +299,9 @@
 
         /* --- THE 60FPS MODAL ENGINE --- */
         .modal {
-            display: flex; /* Always flex, no reflow jumps */
-            visibility: hidden; /* Hidden from render tree */
-            pointer-events: none; /* Cannot be clicked */
+            display: flex; 
+            visibility: hidden; 
+            pointer-events: none; 
             opacity: 0;
             
             position: fixed; 
@@ -296,12 +310,11 @@
             top: 0;
             width: 100%; 
             height: 100%; 
-            background-color: rgba(5, 5, 10, 0.98); /* Removed heavy blur */
+            background-color: rgba(5, 5, 10, 0.98); 
             
             justify-content: center;
             align-items: center;
             
-            /* Hardware accelerated transition on opacity and visibility */
             transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
             will-change: opacity;
         }
@@ -319,16 +332,14 @@
             box-shadow: 0 0 40px rgba(0, 255, 157, 0.1);
             border: 1px solid var(--accent-color);
             
-            /* Start slightly scaled down */
             transform: scale(0.95);
-            /* Fast, snappy transform transition */
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             will-change: transform;
             object-fit: contain;
         }
 
         .modal.show .modal-content {
-            transform: scale(1); /* Pop to full size */
+            transform: scale(1); 
         }
 
         .modal-close {
@@ -344,9 +355,7 @@
         }
 
         .modal-close:hover,
-        .modal-close:focus {
-            color: var(--accent-color);
-        }
+        .modal-close:focus { color: var(--accent-color); }
 
         @media (max-width: 1024px) {
             body { height: auto; overflow: auto; padding: 20px; }
@@ -369,7 +378,7 @@
                 <div class="bio-text">
                     <p style="margin-bottom: 5px;"><strong>> status:</strong> Dec 2025 Graduate</p>
                     <p style="margin-bottom: 5px;"><strong>> background:</strong> First-Gen, Oldest of 7</p>
-                    <p><strong>> mission:</strong> Building robust backend systems to move people beyond what's possible.</p>
+                    <p style="margin-bottom: 0;"><strong>> mission:</strong> Building robust backend systems to move people beyond what's possible.</p>
                 </div>
              </div>
              <div class="contact-section-internal">
@@ -503,9 +512,7 @@
 
         images.forEach(img => {
             img.addEventListener("click", function() {
-                // Instantly swap source (browser already has it cached from the grid)
                 modalImg.src = this.src;
-                // Instantly trigger CSS transition (no timeouts needed!)
                 modal.classList.add("show");
             });
         });
